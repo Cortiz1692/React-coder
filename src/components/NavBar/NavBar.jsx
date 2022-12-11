@@ -31,7 +31,7 @@ function NavBar() {
               </li>
               <li className="nav-item">
                 <NavLink className="nav-link" style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                  to="/item/1">Productos</NavLink>
+                  to="/item/1">Categorias</NavLink>
               </li>
               <li className="nav-item">
                 <NavLink className="nav-link" style={({ isActive }) => (isActive ? activeStyle : undefined)}
