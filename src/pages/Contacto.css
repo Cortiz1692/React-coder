@@ -1,0 +1,18 @@
+.containerForm{
+    justify-content: center;
+    margin: 50px;
+   
+    
+}
+
+
+.form{
+    color: whitesmoke;
+    text-align: center;
+}
+.enviar{
+    background: rgb(159,195,235);
+}
+.menu {
+    margin-top: 32px;
+}
