@@ -1,13 +1,13 @@
 /* -------------- BACK-END -------------- */
 import products from "../data/products";
-
+/*
 function getItems() {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(products);
     }, 500);
   });
-}
+}*/
 
 export function getItemsCategory(categoryID) {
   return new Promise((resolve, reject) => {
@@ -21,7 +21,7 @@ export function getItemsCategory(categoryID) {
     reject("No hay productos para esta categoría.")
   });
 }
-
+/*
 export function getSingleItem(itemID) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -34,4 +34,4 @@ export function getSingleItem(itemID) {
   });
 }
 
-export default getItems;
+export default getItems;*/

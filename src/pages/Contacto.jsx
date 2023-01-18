@@ -1,7 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
+import { cartContext } from "../storage/CartContext";
 import "./Contacto.css";
 
 function Contacto() {
+
+  const miContexto = useContext(cartContext);
+  console.log(miContexto.saludo);
+
   return (
     <div className="containerForm" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
     <div className="row">

@@ -1,14 +1,118 @@
-const products = [
+import { write } from "@popperjs/core";
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+  addDoc,
+  documentId,
+  writeBatch,
+} from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBVdJsUTq8wE_jn_ElzJP5lfPp6J_Zl4kQ",
+  authDomain: "reactcoderhouse-9d0fb.firebaseapp.com",
+  projectId: "reactcoderhouse-9d0fb",
+  storageBucket: "reactcoderhouse-9d0fb.appspot.com",
+  messagingSenderId: "43430949684",
+  appId: "1:43430949684:web:dde929e96f61ef5e422b61"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const DB = getFirestore(app);
+
+export async function getSingleItem(id) {
+  //1. referencia
+  let docRef = doc(DB, "products", id);
+
+  //2. obtenemos la respuesta async de getDoc
+  let docSnapshot = await getDoc(docRef);
+
+  //3. retornamos la respuesta.data()
+  let item = docSnapshot.data();
+  item.id = docSnapshot.id;
+
+  return item;
+}
+
+export async function getItems() {
+  let collectionRef = collection(DB, "products");
+  let docsSnapshot = await getDocs(collectionRef);
+
+  let docsArray = docsSnapshot.docs;
+
+  let dataDocs = docsArray.map((doc) => {
+    return { ...doc.data(), id: doc.id };
+  });
+
+  return dataDocs;
+}
+
+export async function getItemsCategory(categoryID) {
+  let collectionRef = collection(DB, "products");
+
+  let q = query(collectionRef, where("category", "==", categoryID));
+
+  let docsSnapshot = await getDocs(q);
+  let docsArray = docsSnapshot.docs;
+
+  let dataDocs = docsArray.map((doc) => {
+    return { ...doc.data(), id: doc.id };
+  });
+
+  return dataDocs;
+}
+
+export async function createBuyOrder(order) {
+  const colectionRef = collection(DB, "orders");
+
+  let newOrder = await addDoc(colectionRef, order);
+  return newOrder.id;
+}
+
+export async function createBuyOrder_WithStockControl(order) {
+  const colectionRef = collection(DB, "orders");
+  const colectionProductsRef = collection(DB, "products");
+
+  let batch = writeBatch(DB);
+
+  let arrayIds = order.items.map((itemInCart) => itemInCart.id);
+  const q = query(colectionProductsRef, where(documentId(), "in", arrayIds));
+  let snapshot = await getDocs(q);
+
+  snapshot.docs.forEach((doc) => {
+    let stockDispoible = doc.data().stock;
+
+    let ItemInCart = order.items.find((item) => item.id === doc.id);
+    let countItemInCart = ItemInCart.count;
+
+    if (stockDispoible < countItemInCart)
+      throw new Error(
+        `Stock no disponible para el producto para el producto ${doc.id}`
+      );
+    else batch.update(doc.ref, { stock: stockDispoible - countItemInCart });
+  });
+
+  await batch.commit();
+  let newOrder = await addDoc(colectionRef, order);
+  return newOrder.id;
+}
+
+export async function exportItemsToFirestore() {
+ const products = [
     {
       id: 1,
       title: "Los 4 Acuerdos",
-      newProducto: true,
       price: 649,
       stock: 2,
       category: "books",
       img: "https://http2.mlstatic.com/D_NQ_NP_670430-MLA52608110053_112022-V.webp",
       description: "Los 4 acuerdos son un libro escrito por el Dr. Miguel Ruiz y su principal propósito es convertirse en una guía práctica que te ayude a tener una mayor y mejor libertad personal.",
-      discount: 25
     },
     {
       id: 2,
@@ -23,10 +127,9 @@ const products = [
     {
         id: 3,
         title: "Volver a empezar",
-        newProducto: true,
         description:
         "Volver a empezar es una guía para alcanzar la vida plena. En ella se nos enseña a establecer una hoja de ruta propia y a reflexionar acerca del sentido de la vida y, sobre todo, de nuestros valores. ¿Qué es lo realmente importante para cada uno de nosotros?",
-        price: 1000,
+        price: 899,
         stock: 34,
         category: "books",
         img: "https://http2.mlstatic.com/D_NQ_NP_726245-MLA50739544464_072022-V.webp",
@@ -34,7 +137,6 @@ const products = [
     {
       id: 4,
       title: "Meditaciones",
-      newProducto: true,
       description: "Aun así, encontró tiempo entre batalla y batalla para escribir en griego una obra intimista (Meditaciones), que representa una especie de notas personales de principios estoicos en las que reflexiona sobre la inevitabilidad de las cosas, la búsqueda de la virtud, los límites de la naturaleza humana, la fugacidad del tiempo o el modo correcto de comportarse en la vida.",
       price: 280,
       stock: 123,
@@ -103,5 +205,15 @@ const products = [
     },
     
   ];
-  
-  export default products;
+
+  const colectionRef = collection(DB, "products");
+
+  for (let item of products) {
+    /* addDoc(colectionRef, item).then((respuesta) =>
+      console.log("Item creado con el id->", respuesta.id)
+    ); */
+
+    let newItem = await addDoc(colectionRef, item);
+    console.log(newItem.id);
+  }
+}
