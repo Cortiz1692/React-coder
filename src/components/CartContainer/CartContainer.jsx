@@ -20,6 +20,7 @@ function CartContainer() {
       buyer: buyerData,
       items: cart,
        
+      
       total: 999,
       date: new Date(),
     };
@@ -45,7 +46,7 @@ function CartContainer() {
       <table className="cartList">
         <thead className="cartList_head">
           <tr className="cartList_row">
-            <th>Miniatura</th>
+            <th>Libro</th>
             <th>Titulo</th>
             <th>Precio</th>
             <th>Cantidad</th>
