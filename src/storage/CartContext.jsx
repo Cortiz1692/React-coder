@@ -8,8 +8,6 @@ function CartContextProvider(props){
  
     const [cart, setCart] = useState([]);
 
-    let saludo = "hola desde context"
-
     function addToCart(item,count){
         let indexItemInCart = cart.findIndex( itemInContext => itemInContext.id === item.id )   
         let isItemInCart = indexItemInCart !== -1;
@@ -22,25 +20,31 @@ function CartContextProvider(props){
         else {
             newCart.push( {...item, count: count})        
             setCart(newCart);
-        }
+        }   
     }
-
-    let totalItemsInCart = 0;
-    cart.forEach( item => totalItemsInCart += item.count);
     
     function totalItemsInCartfn(){
         let totalItemsInCart = 0;
         cart.forEach( item => totalItemsInCart += item.count);
         return totalItemsInCart;
     }
-
+    const removeItems = (idRemove)=>{
+        let newCart = cart.filter((itemInCart)=> itemInCart.id !== idRemove);
+        setCart(newCart);
+    }
+        const clearCart = ()=> { setCart ([])};
+        
+       const totalPrice= () =>{        
+         return cart.reduce((prev, act)=> prev + act.count * act.price,0)
+        }       
     return(
         <Provider value={ {
             cart, 
-            saludo,
             addToCart,
-            totalItemsInCart,
-            totalItemsInCartfn
+            totalItemsInCartfn,
+            clearCart,
+            removeItems,
+            totalPrice
             }}>
              {props.children}
         </Provider>

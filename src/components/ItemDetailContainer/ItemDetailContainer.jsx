@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { getSingleItem } from "../../services/firebase";
 import { useParams } from "react-router-dom";
 import "./Itemdetail.css";
 
 import ItemDetail from "./ItemDetail";
 import Loader from "../Loader/Loader";
+ 
+
 
 function ItemDetailContainer() {
   const [product, setProduct] = useState([]);

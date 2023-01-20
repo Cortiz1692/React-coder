@@ -6,10 +6,6 @@ import { Link } from "react-router-dom";
 function Item(props) {
   let urlDetail = `/item/${props.id}`;
 
-  /* let stylePrice = {
-    color: props.discount ? "green" : "black",
-  }; */
-
   let classNamePrice = `item-price ${props.discount && "offerTag"}`;
   let classNameItem = `card ${props.newProduct ? "item-new" : ""}`;
 

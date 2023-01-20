@@ -13,7 +13,7 @@ function NavBar() {
     color: "#066699",
   };
   return (
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav className="navbar navbar-expand-lg bg-light">
       <div className="container-fluid">
         <div className="container-fluid">
           <a className="navbar-brand" href="">Reed Books</a>

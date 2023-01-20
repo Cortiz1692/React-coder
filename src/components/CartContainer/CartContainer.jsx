@@ -13,14 +13,14 @@ import CheckOutForm from "./CheckOutForm";
 function CartContainer() {
   const [order, setOrder] = useState(false);
 
-  const { cart } = useContext(cartContext);
-
+  const { cart, removeItems, totalPrice } = useContext(cartContext); 
+  
   function handleCheckout(buyerData) {
+
     const order = {
       buyer: buyerData,
       items: cart,
-       
-      
+
       total: 999,
       date: new Date(),
     };
@@ -64,18 +64,18 @@ function CartContainer() {
               <td>$ {item.price}</td>
               <td>{item.count}</td>
               <td>
-                <Button color="#c63224" onClick={item.removeItem}>
+                <Button color="#c63224" onClick={()=> removeItems()}>
                   X
                 </Button>
               </td>
-              <th>$ --,--</th>
+              <th>${totalPrice()}</th>
             </tr>
           ))}
         </tbody>
       </table>
 
       <div className="cartList_detail">
-        <h4>El total de tu compra es de $ --,--</h4>
+        <h4>El total de tu compra es de ${totalPrice()}</h4>
 
         <CheckOutForm onCheckout={handleCheckout} />
       </div>

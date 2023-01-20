@@ -9,9 +9,9 @@ function ItemDetail({ product }) {
   const { addToCart, removeItem } = useContext(cartContext);
 
   function handleAddToCart(count) {
-    //1. Guardar la cantidad en un estado
+   
     setCountInCart(count);
-    //2. ocultar el itemCount . . .
+   
     addToCart(product, count);
   }
 
