@@ -28,9 +28,10 @@ function CartContextProvider(props){
         cart.forEach( item => totalItemsInCart += item.count);
         return totalItemsInCart;
     }
-    const removeItems = (idRemove)=>{
-        let newCart = cart.filter((itemInCart)=> itemInCart.id !== idRemove);
+    const removeItems = (iditem)=>{
+        let newCart = cart.filter((itemInCart)=> itemInCart.id !== iditem );
         setCart(newCart);
+
     }
         const clearCart = ()=> { setCart ([])};
         

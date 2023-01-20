@@ -13,7 +13,7 @@ import CheckOutForm from "./CheckOutForm";
 function CartContainer() {
   const [order, setOrder] = useState(false);
 
-  const { cart, removeItems, totalPrice } = useContext(cartContext); 
+  const { cart, removeItems, totalPrice, clearCart } = useContext(cartContext); 
   
   function handleCheckout(buyerData) {
 
@@ -64,7 +64,7 @@ function CartContainer() {
               <td>$ {item.price}</td>
               <td>{item.count}</td>
               <td>
-                <Button color="#c63224" onClick={()=> removeItems()}>
+                <Button color="#c63224" onButtonTouch={()=> removeItems(item.id)}>
                   X
                 </Button>
               </td>
